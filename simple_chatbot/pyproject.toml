@@ -1,0 +1,33 @@
+[project]
+name = "ai-engineering-simple-chatbot"
+version = "0.1.0"
+description = "Simple chatbot using LangChain ChatOpenAI and Streamlit"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "langchain-openai>=1.1.12",
+    "python-dotenv>=1.2.2",
+    "streamlit>=1.56.0",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.20.0",
+    "pip-audit>=2.10.0",
+    "ruff>=0.15.9",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["simple_chatbot"]
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
