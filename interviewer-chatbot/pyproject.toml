@@ -1,21 +1,31 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
-name = "ai-engineering-simple-chatbot"
+name = "interviewer-chatbot"
 version = "0.1.0"
 description = "Simple chatbot using LangChain ChatOpenAI and Streamlit"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "google-cloud-secret-manager>=2.23.3",
     "langchain-openai>=1.1.12",
-    "python-dotenv>=1.2.2",
     "streamlit>=1.56.0",
+    "streamlit-js-eval>=1.0.0",
 ]
 
 [dependency-groups]
 dev = [
     "mypy>=1.20.0",
     "pip-audit>=2.10.0",
+    "python-dotenv>=1.2.2",
     "ruff>=0.15.9",
+    "types-PyYAML>=6.0.12",
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["interviewer_chatbot"]
 
 [tool.ruff]
 line-length = 120
@@ -25,7 +35,7 @@ target-version = "py312"
 select = ["E", "F", "I"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["simple_chatbot"]
+known-first-party = ["interviewer_chatbot"]
 
 [tool.mypy]
 python_version = "3.12"
