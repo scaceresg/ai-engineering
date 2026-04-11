@@ -5,12 +5,13 @@ build-backend = "hatchling.build"
 [project]
 name = "interviewer-chatbot"
 version = "0.1.0"
-description = "Simple chatbot using LangChain ChatOpenAI and Streamlit"
+description = "Simple chatbot using OpenAI and Streamlit"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "google-cloud-secret-manager>=2.23.3",
-    "langchain-openai>=1.1.12",
+    "openai>=1.82.0",
+    "pyyaml>=6.0.3",
     "streamlit>=1.56.0",
     "streamlit-js-eval>=1.0.0",
 ]

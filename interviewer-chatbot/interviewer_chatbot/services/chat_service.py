@@ -2,21 +2,23 @@
 
 from collections.abc import Iterator
 
-from langchain_openai import ChatOpenAI
+from openai import OpenAI
 
 
 class ChatService:
-    """Stateless wrapper around a ChatOpenAI client for streaming interview turns.
+    """Stateless wrapper around an OpenAI client for streaming interview turns.
 
     All conversation state is managed by the caller (Streamlit session_state).
     This class is safe to share across concurrent sessions.
 
     Args:
-        client: Pre-configured ChatOpenAI instance to use for inference.
+        client: Shared OpenAI client instance.
+        model_params: Per-request model parameters (model, temperature, etc.).
     """
 
-    def __init__(self, client: ChatOpenAI) -> None:
+    def __init__(self, client: OpenAI, model_params: dict) -> None:
         self._client = client
+        self._model_params = model_params
 
     def stream_response(self, messages: list[dict]) -> Iterator[str]:
         """Stream a response token by token for the given conversation.
@@ -28,5 +30,8 @@ class ChatService:
         Yields:
             Text chunks from the model as they arrive.
         """
-        stream = self._client.stream(messages)
-        yield from (str(chunk.content) for chunk in stream)
+        stream = self._client.chat.completions.create(messages=messages, stream=True, **self._model_params)
+        for chunk in stream:
+            content = chunk.choices[0].delta.content
+            if content:
+                yield content
