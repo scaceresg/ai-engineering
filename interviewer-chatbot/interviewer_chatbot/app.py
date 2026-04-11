@@ -1,7 +1,7 @@
 import os
 
 import streamlit as st
-from langchain_openai import ChatOpenAI
+from openai import OpenAI
 from streamlit_js_eval import streamlit_js_eval  # type: ignore[import-untyped]
 
 from interviewer_chatbot.services.chat_service import ChatService
@@ -19,10 +19,12 @@ prompts: dict = config.get("prompts", {})
 
 @st.cache_resource
 def get_services() -> tuple[ChatService, FeedbackService]:
-    llm_models: dict = Config(environment=environment).env_vars.get("llm-models", {})
-    chat_client = ChatOpenAI(**llm_models.get("chatbot", {}))
-    feedback_client = ChatOpenAI(**llm_models.get("feedback", {}))
-    return ChatService(chat_client), FeedbackService(feedback_client)
+    llm_models: dict = config.get("llm-models", {})
+    client = OpenAI()
+    return (
+        ChatService(client, llm_models.get("chatbot", {})),
+        FeedbackService(client, llm_models.get("feedback", {})),
+    )
 
 
 chat_service, feedback_service = get_services()
